@@ -19,5 +19,5 @@ spec:
   source:
     type: Git
     git:
-      uri: 'https://github.com/jo8s/Breakout.git'
+      uri: 'https://github.com/Tonyvdkieft/Breakout.git'
   runPolicy: Serial
