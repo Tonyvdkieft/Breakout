@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: start-build
+spec:
+  workspaces:
+    - name: source-code
+  params:
+    - description: Name of the BuildConfig
+      name: buildconfig-name
+      type: string
+  steps:
+    - image: 'quay.io/openshift/origin-cli:latest'
+      name: trigger-build
+      script: |
+        #!/usr/bin/env bash
+        set -e
+        oc start-build $(params.buildconfig-name) -n oostj20-dev

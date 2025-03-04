@@ -1,0 +1,32 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: github-trigger-template
+spec:
+  params:
+    - name: revision
+      description: The git revision
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1beta1
+      kind: PipelineRun
+      metadata:
+        generateName: build-pipeline-run-
+      spec:
+        params:
+          - name: repo-url
+            value: 'https://github.com/jo8s/Breakout'
+          - name: revision
+            value: $(tt.params.revision)
+          - name: buildconfig-name
+            value: my-python-app-build
+        pipelineRef:
+          name: build-pipeline
+        workspaces:
+          - name: shared-workspace
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                resources:
+                  requests:
+                    storage: 512Mi        

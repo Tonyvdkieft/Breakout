@@ -1,0 +1,28 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: share-message
+spec:
+  params:
+    - name: message
+      type: string
+  workspaces:
+    - name: pipeline-space
+  tasks:
+    - name: write-message
+      params:
+        - name: message
+          value: $(params.message)
+      taskRef:
+        name: write-message
+      workspaces:
+        - name: messages
+          workspace: pipeline-space
+    - name: read-message
+      runAfter:
+        - write-message
+      taskRef:
+        name: read-message
+      workspaces:
+        - name: messages
+          workspace: pipeline-space

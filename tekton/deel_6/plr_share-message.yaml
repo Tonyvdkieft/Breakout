@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: share-message-run-
+spec:
+  params:
+    - name: message
+      value: "Hello World"
+  pipelineRef:
+    name: share-message
+  workspaces:
+    - name: pipeline-space
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 128Mi

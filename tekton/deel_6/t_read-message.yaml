@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: read-message
+spec:
+  steps:
+    - name: read-message
+      image: alpine
+      script: | 
+        #!/usr/bin/env sh
+        ls -la $(workspaces.messages.path)
+        cat $(workspaces.messages.path)/message
+  workspaces:
+    - name: messages

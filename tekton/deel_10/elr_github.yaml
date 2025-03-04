@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: github-el-route
+spec:
+  port:
+    targetPort: http-listener
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: el-github-pr
+    weight: 100
+  wildcardPolicy: None

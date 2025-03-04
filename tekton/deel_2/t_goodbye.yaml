@@ -1,0 +1,15 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: goodbye
+spec:
+  params:
+  - name: username
+    type: string
+    description: The name you want to say goodbye to
+  steps:
+    - name: say-hello
+      image: docker/whalesay 
+      script: |
+        #!/usr/bin/env sh
+        cowsay "Goodbye $(params.username)"

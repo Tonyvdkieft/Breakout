@@ -1,0 +1,23 @@
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: build-pipeline-run-
+spec:
+  pipelineRef:
+    name: build-pipeline
+  workspaces:
+    - name: shared-workspace
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 128Mi
+  params:
+    - name: repo-url
+      value: https://github.com/jo8s/Breakout
+    - name: revision
+      value: main
+    - name: buildconfig-name
+      value: my-python-app-build

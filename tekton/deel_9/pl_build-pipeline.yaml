@@ -1,0 +1,48 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: build-pipeline
+spec:
+  workspaces:
+    - name: shared-workspace
+  params:
+    - name: repo-url
+      type: string
+      description: The git repository URL
+    - name: revision
+      type: string
+      description: The git revision
+    - name: buildconfig-name
+      type: string
+      description: The name of the BuildConfig
+  tasks:
+    - name: git-clone
+      taskRef:
+        name: git-clone
+      params:
+        - name: url
+          value: $(params.repo-url)
+        - name: revision
+          value: $(params.revision)
+      workspaces:
+        - name: source-code
+          workspace: shared-workspace
+    - name: python-test
+      taskRef:
+        name: python-test
+      runAfter:
+        - git-clone
+      workspaces:
+        - name: source-code
+          workspace: shared-workspace
+    - name: start-build
+      taskRef:
+        name: start-build
+      params:
+        - name: buildconfig-name
+          value: $(params.buildconfig-name)
+      runAfter:
+        - python-test
+      workspaces:
+        - name: source-code
+          workspace: shared-workspace

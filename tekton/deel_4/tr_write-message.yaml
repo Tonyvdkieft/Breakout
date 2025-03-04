@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: write-message-run-
+spec:
+  taskRef:
+    name: write-message
+  params:
+    - name: message
+      value: "Hello World"
+  workspaces:
+    - name: messages
+      emptyDir: {}

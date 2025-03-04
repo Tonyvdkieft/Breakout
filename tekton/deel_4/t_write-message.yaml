@@ -1,0 +1,19 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: write-message
+spec:
+  params:
+  - name: message
+    type: string
+    description: The message you want to say
+  steps:
+    - name: write-message
+      image: docker/whalesay 
+      script: |
+        #!/usr/bin/env sh
+        cowsay $(params.message) > $(workspaces.messages.path)/message
+        echo "file written to $(workspaces.messages.path)"
+        ls -la $(workspaces.messages.path)
+  workspaces:
+    - name: messages

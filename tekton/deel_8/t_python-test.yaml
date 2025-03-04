@@ -1,0 +1,30 @@
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: python-test
+spec:
+  workspaces:
+    - name: source-code
+  steps:
+    - name: create-venv
+      image: python:3.9
+      script: |
+        #!/usr/bin/env bash
+        cd $(workspaces.source-code.path)/Breakout/python-app
+        ls -la
+        python -m venv $PWD/venv
+    - name: install-dependencies
+      image: python:3.9
+      script: |
+        #!/usr/bin/env bash
+        cd $(workspaces.source-code.path)/Breakout/python-app
+        ls -la
+        source $PWD/venv/bin/activate
+        pip install -r requirements.txt
+    - name: run-tests
+      image: python:3.9
+      script: |
+        #!/usr/bin/env bash
+        cd $(workspaces.source-code.path)/Breakout/python-app
+        source $PWD/venv/bin/activate
+        python -m unittest test_app.py

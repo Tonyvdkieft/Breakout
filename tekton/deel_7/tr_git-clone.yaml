@@ -1,0 +1,21 @@
+apiVersion: tekton.dev/v1beta1
+kind: TaskRun
+metadata:
+  generateName: git-clone-run-
+spec:
+  taskRef:
+    name: git-clone
+  params:
+  - name: url
+    value: https://github.com/jo8s/Breakout
+  - name: revision
+    value: main
+  workspaces:
+    - name: source-code
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 128Mi

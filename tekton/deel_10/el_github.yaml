@@ -1,0 +1,21 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: github-pr
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - bindings:
+        - kind: TriggerBinding
+          ref: github-pr-trigger-binding
+      name: pr-trigger
+      interceptors:
+        - params:
+            - name: "eventTypes"
+              value: ["pull_request"]
+          ref:
+            kind: ClusterInterceptor
+            name: "github"
+            apiVersion: triggers.tekton.dev
+      template:
+        ref: github-trigger-template
