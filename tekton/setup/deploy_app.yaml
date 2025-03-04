@@ -1,4 +1,4 @@
-apiVersion: apps/v1
+0apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: my-python-app-deployment
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: app
-          image: 'image-registry.openshift-image-registry.svc:5000/oostj20-dev/my-python-app:latest'
+          image: 'image-registry.openshift-image-registry.svc:5000/kiefa01-dev/my-python-app:latest'
           imagePullPolicy: Always
           ports:
             - containerPort: 5000
